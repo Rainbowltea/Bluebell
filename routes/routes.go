@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"bluebell/controllers"
 	"bluebell/logger"
 	"net/http"
 
@@ -14,5 +15,7 @@ func SetUp() *gin.Engine {
 		ctx.String(http.StatusOK, "hello脚手架")
 	})
 
+	//注册业务路由
+	r.POST("/signup", controllers.SignUpHandler)
 	return r
 }
