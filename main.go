@@ -26,21 +26,21 @@ func main() {
 		return
 	}
 	// 2.初始化日志
-	if err := logger.Init(); err != nil {
+	if err := logger.Init(settings.Conf.LogConfig); err != nil {
 		fmt.Print("Init logger failed ,err %v\n", err)
 		return
 	}
-	//把缓冲的日志文件追加到日志文件中
+	// 把缓冲的日志文件追加到日志文件中
 	defer zap.L().Sync()
 	// 3.初始化MYSQL
-	if err := mysql.Init(); err != nil {
+	if err := mysql.Init(settings.Conf.MySQLConfig); err != nil {
 		fmt.Print("Init mysql failed ,err %v\n", err)
 		return
 	}
 	//关闭连接
 	defer mysql.Close()
 	//4.,初始化REDIS连接
-	if err := redis.Init(); err != nil {
+	if err := redis.Init(settings.Conf.RedisConfig); err != nil {
 		fmt.Print("Init redis failed ,err %v\n", err)
 		return
 	}
