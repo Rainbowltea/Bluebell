@@ -9,6 +9,7 @@ import (
 )
 
 func SetUp() *gin.Engine {
+
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 	r.GET("/", func(ctx *gin.Context) {
