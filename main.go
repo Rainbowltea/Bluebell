@@ -24,37 +24,37 @@ import (
 func main() {
 	// 1.加载配置
 	if err := settings.Init(); err != nil {
-		fmt.Print("Init settings failed ,err %v\n", err)
+		fmt.Printf("Init settings failed ,err %v\n", err)
 		return
 	}
 	// 2.初始化日志
 	if err := logger.Init(settings.Conf.LogConfig); err != nil {
-		fmt.Print("Init logger failed ,err %v\n", err)
+		fmt.Printf("Init logger failed ,err %v\n", err)
 		return
 	}
 	// 把缓冲的日志文件追加到日志文件中
 	defer zap.L().Sync()
 	// 3.初始化MYSQL
 	if err := mysql.Init(settings.Conf.MySQLConfig); err != nil {
-		fmt.Print("Init mysql failed ,err %v\n", err)
+		fmt.Printf("Init mysql failed ,err %v\n", err)
 		return
 	}
 	//关闭连接
 	defer mysql.Close()
 	//4.,初始化REDIS连接
 	if err := redis.Init(settings.Conf.RedisConfig); err != nil {
-		fmt.Print("Init redis failed ,err %v\n", err)
+		fmt.Printf("Init redis failed ,err %v\n", err)
 		return
 	}
 	defer redis.Close()
 	//调用雪花算法获得用户id
 	if err := snowflake.Init(settings.Conf.StartTime, settings.Conf.MachineID); err != nil {
-		fmt.Print("Init snowflake failed ,err %v\n", err)
+		fmt.Printf("Init snowflake failed ,err %v\n", err)
 		return
 	}
 	//初始化gin框架内置的校验器使用的翻译器
 	if err := controllers.InitTrans("zh"); err != nil {
-		fmt.Print("Init validator trans failed ,err %v\n", err)
+		fmt.Printf("Init validator trans failed ,err:%v\n", err)
 		return
 	}
 	// 注册路由

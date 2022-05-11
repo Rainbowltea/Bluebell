@@ -9,18 +9,25 @@ import (
 
 //Conf全局变量，用来保存程序的所有配置信息
 //"new"一个结构体得到的是地址
-var Conf = new(AppConfig)
+var Conf = new(multipleConfig)
 
-type AppConfig struct {
-	Name         string `mapstructure:"name"`
-	Mode         string `mapstructure:"mode"`
-	Version      string `mapstructure:"version"`
-	Port         int    `mapstructure:"port"`
-	StartTime    string `mapstructure:"start_time"`
-	MachineID    int64  `mapstructure:"machine_id"`
+type multipleConfig struct {
+	*AppConfig   `mapstructure:"app"`
 	*LogConfig   `mapstructure:"log"`
 	*MySQLConfig `mapstructure:"mysql"`
 	*RedisConfig `mapstructure:"redis"`
+}
+
+type AppConfig struct {
+	Name      string `mapstructure:"name"`
+	Mode      string `mapstructure:"mode"`
+	Version   string `mapstructure:"version"`
+	Port      int    `mapstructure:"port"`
+	StartTime string `mapstructure:"start_time"`
+	MachineID int64  `mapstructure:"machine_id"`
+	// *LogConfig   `mapstructure:"log"`
+	// *MySQLConfig `mapstructure:"mysql"`
+	// *RedisConfig `mapstructure:"redis"`
 }
 
 type LogConfig struct {
@@ -35,7 +42,7 @@ type MySQLConfig struct {
 	Host         string `mapstructure:"host"`
 	User         string `mapstructure:"user"`
 	Password     string `mapstructure:"password"`
-	DbName       string `mapstructure:"db_name"`
+	DbName       string `mapstructure:"dbname"`
 	Port         int    `mapstructure:"port"`
 	MaxOpenConns int    `mapstructure:"max_open_conns"`
 	MaxIdleConns int    `mapstructure:"max_idle_conns"`
@@ -45,7 +52,7 @@ type RedisConfig struct {
 	Host     string `mapstructure:"host"`
 	Password string `mapstructure:"password"`
 	Port     int    `mapstructure:"port"`
-	DB       int    `mapstructure:"db"`
+	DB       int    `mapstructure:"dbname"`
 	PoolSize int    `mapstructure:"pool_size"`
 }
 
