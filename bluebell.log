@@ -34,3 +34,7 @@
 {"level":"INFO","time":"2022-05-11T20:50:12.117+0800","caller":"bluebell/main.go:83","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2022-05-12T14:32:02.286+0800","caller":"logger/logger.go:76","msg":"/signup","status":200,"method":"POST","path":"/signup","query":"","ip":"::1","user-agent":"apifox/1.4.21 (https://www.apifox.cn)","errors":"","cost":0.0164878}
 {"level":"INFO","time":"2022-05-12T15:18:45.069+0800","caller":"bluebell/main.go:83","msg":"Shutdown Server ..."}
+{"level":"ERROR","time":"2022-05-12T16:41:43.552+0800","caller":"controllers/user.go:74","msg":"Login with invalid param","error":"invalid character '}' looking for beginning of object key string"}
+{"level":"INFO","time":"2022-05-12T16:41:43.553+0800","caller":"logger/logger.go:87","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"apifox/1.4.21 (https://www.apifox.cn)","errors":"","cost":0.0010249}
+{"level":"INFO","time":"2022-05-12T16:43:23.833+0800","caller":"logger/logger.go:87","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"apifox/1.4.21 (https://www.apifox.cn)","errors":"","cost":0.0131138}
+{"level":"INFO","time":"2022-05-12T16:43:30.115+0800","caller":"bluebell/main.go:83","msg":"Shutdown Server ..."}

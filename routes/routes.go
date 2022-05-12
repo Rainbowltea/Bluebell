@@ -22,5 +22,7 @@ func SetUp(mode string) *gin.Engine {
 	//注册业务路由
 	r.POST("/signup", controllers.SignUpHandler)
 
+	//登录业务路由
+	r.POST("/login", controllers.LoginHandler)
 	return r
 }
