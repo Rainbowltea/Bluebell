@@ -16,7 +16,7 @@ import (
 */
 type ResponseData struct {
 	Code ResCode     `json:"code"`
-	Msg  interface{} `json:"msg`
+	Msg  interface{} `json:"msg"`
 	Data interface{} `json:"data,omitempty"`
 }
 

@@ -3,8 +3,10 @@ package logic
 import (
 	"bluebell/dao/mysql"
 	"bluebell/models"
+	"bluebell/pkg/jwt"
 	"bluebell/pkg/snowflake"
 	_ "errors"
+	_ "go/token"
 )
 
 func SignUp(p *models.ParamSignUp) (err error) {
@@ -29,13 +31,21 @@ func SignUp(p *models.ParamSignUp) (err error) {
 	//保存进数据库
 	return mysql.InsertUser(user)
 }
-func Login(p *models.ParamLogin) (err error) {
+func Login(p *models.ParamLogin) (token string, err error) {
 	user := &models.User{
 		Username: p.Username,
 		Password: p.Password,
 	}
-	if err := mysql.Login(user); err != nil {
-		return err
+	//  mysql.Login 此处传入user指针，在指针查询时有对user进行一个“完整”赋值，
+	//  即可以获得user的ID
+	if err = mysql.Login(user); err != nil {
+		return "", err
 	}
+	//生成JWT
+	token, err = jwt.GenToken(user.UserID, user.Username)
+	if err != nil {
+		return
+	}
+	user.Token = token
 	return
 }

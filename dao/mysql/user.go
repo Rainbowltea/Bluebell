@@ -53,16 +53,15 @@ func encryptPassword(oPassword string) string {
 //Login 用户登录
 func Login(user *models.User) (err error) {
 	oPassword := user.Password
-	tempuser := new(models.User)
 	sqlStr := `select user_id ,username, password from user where username=?`
-	err = db.Get(tempuser, sqlStr, user.Username)
+	err = db.Get(user, sqlStr, user.Username)
 	if err == sql.ErrNoRows {
 		return ErrorUserNotExist
 	}
 	if err != nil {
 		return err
 	}
-	if tempuser.Password != encryptPassword(oPassword) {
+	if user.Password != encryptPassword(oPassword) {
 		return ErrorInvalidPassword
 	}
 	return

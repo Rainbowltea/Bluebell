@@ -5,6 +5,7 @@ import (
 	"bluebell/logic"
 	"bluebell/models"
 	"errors"
+	"go/token"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -120,7 +121,8 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	//业务逻辑处理
-	if err := logic.Login(p); err != nil {
+	token, err := logic.Login(p)
+	if err != nil {
 		zap.L().Error("logic.Login falied", zap.String("username", p.Username), zap.Error(err))
 		if errors.Is(err, mysql.ErrorUserNotExist) {
 			ResponseError(c, CodeUserNotExist)
@@ -137,5 +139,5 @@ func LoginHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "登录成功",
 	})
-	ResponseSuccess(c, nil)
+	ResponseSuccess(c, token)
 }

@@ -25,5 +25,13 @@ func SetUp(mode string) *gin.Engine {
 	//登录业务路由
 	r.POST("/login", controllers.LoginHandler)
 
+	r.GET("/ping", func(ctx *gin.Context) {
+		isLogin := true
+		if isLogin {
+			ctx.String(http.StatusOK, "pong")
+		} else {
+			ctx.String(http.StatusOK, "请登录")
+		}
+	})
 	return r
 }
