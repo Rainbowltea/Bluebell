@@ -11,6 +11,13 @@ import (
 
 const secret = "codecffee.xyz"
 
+//根据mysql查询等错误定义
+var (
+	ErrorUserExist       = errors.New("用户已存在")
+	ErrorUserNotExist    = errors.New("用户不存在")
+	ErrorInvalidPassword = errors.New("密码错误")
+)
+
 // InsertUser 向数据库中插入一条新的用户信息
 func InsertUser(user *models.User) (err error) {
 	//对用户密码进行一个加密
@@ -30,7 +37,7 @@ func CheckUserExist(username string) (err error) {
 		return err
 	}
 	if count > 0 {
-		return errors.New("用户已存在")
+		return ErrorUserExist
 	}
 	return
 }
@@ -50,13 +57,13 @@ func Login(user *models.User) (err error) {
 	sqlStr := `select user_id ,username, password from user where username=?`
 	err = db.Get(tempuser, sqlStr, user.Username)
 	if err == sql.ErrNoRows {
-		return errors.New("用户不存在")
+		return ErrorUserNotExist
 	}
 	if err != nil {
 		return err
 	}
 	if tempuser.Password != encryptPassword(oPassword) {
-		return errors.New("密码错误")
+		return ErrorInvalidPassword
 	}
 	return
 }
