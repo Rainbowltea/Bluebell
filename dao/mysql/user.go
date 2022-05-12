@@ -5,6 +5,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
+	_ "fmt"
 )
 
 const secret = "codecffee.xyz"
@@ -13,6 +14,7 @@ const secret = "codecffee.xyz"
 func InsertUser(user *models.User) (err error) {
 	//对用户密码进行一个加密
 	user.Password = encryptPassword(user.Password)
+	//fmt.Println(user.Password)
 	sqlStr := `insert into user(user_id, username, password) values(?,?,?)`
 	_, err = db.Exec(sqlStr, user.UserID, user.Username, user.Password)
 
