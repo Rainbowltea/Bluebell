@@ -5,7 +5,7 @@ import (
 	"bluebell/logic"
 	"bluebell/models"
 	"errors"
-	"go/token"
+	_ "go/token"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
