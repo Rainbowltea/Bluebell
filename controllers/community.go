@@ -36,4 +36,10 @@ func CommunityDetailHandler(c *gin.Context) {
 	}
 	//调用loigc处理事务：查询
 	data, err := logic.GetCommunityDetail(CommunityId)
+	if err != nil {
+		zap.L().Error("logic.GetCommunityList() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy) // 不轻易把服务端报错暴露给外面
+		return
+	}
+	ResponseSuccess(c, data)
 }
