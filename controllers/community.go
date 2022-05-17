@@ -12,7 +12,7 @@ func CommunityHandler(c *gin.Context) {
 	//逻辑处理
 	//返回参数
 
-	data, err := logic.GetCommunicaty()
+	data, err := logic.GetCommunityList()
 	if err != nil {
 		zap.L().Error("logic.GetCommunicaty failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
