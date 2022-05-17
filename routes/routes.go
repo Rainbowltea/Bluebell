@@ -31,7 +31,7 @@ func SetUp(mode string) *gin.Engine {
 
 	{
 		v1.GET("/community", controllers.CommunityHandler)
-
+		v1.GET("/communtiy/:id", controllers.CommunityDetailHandler)
 	}
 	return r
 }

@@ -5,18 +5,11 @@ import (
 	"crypto/md5"
 	"database/sql"
 	"encoding/hex"
-	"errors"
+	_ "errors"
 	_ "fmt"
 )
 
 const secret = "codecffee.xyz"
-
-//根据mysql查询等错误定义
-var (
-	ErrorUserExist       = errors.New("用户已存在")
-	ErrorUserNotExist    = errors.New("用户不存在")
-	ErrorInvalidPassword = errors.New("密码错误")
-)
 
 // InsertUser 向数据库中插入一条新的用户信息
 func InsertUser(user *models.User) (err error) {
