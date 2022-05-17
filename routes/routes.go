@@ -20,15 +20,18 @@ func SetUp(mode string) *gin.Engine {
 		ctx.String(http.StatusOK, "hello脚手架")
 	})
 
-	//注册业务路由
-	r.POST("/signup", controllers.SignUpHandler)
+	v1 := r.Group("/api/v1")
 
-	//登录业务路由
-	r.POST("/login", controllers.LoginHandler)
+	// 注册
+	v1.POST("/signup", controllers.SignUpHandler)
+	// 登录
+	v1.POST("/login", controllers.LoginHandler)
 
-	r.GET("/ping", middlerwares.JWTAuthMiddleware(), func(ctx *gin.Context) {
-		// 判断是否是已登录的用户，判断请求头中是否有 有效的JWT
-		ctx.String(http.StatusOK, "pong")
-	})
+	v1.Use(middlerwares.JWTAuthMiddleware()) // 应用JWT认证中间件
+
+	{
+		v1.GET("/community", controllers.CommunityHandler)
+
+	}
 	return r
 }
