@@ -17,7 +17,8 @@ func GetCommunityList() (communityList []*models.Community, err error) {
 	}
 	return
 }
-func GetCommunityDetailById(id int64) (community *models.CommunityDetail, err error) {
+
+func GetCommunityDetailByID(id int64) (community *models.CommunityDetail, err error) {
 	//分配内存
 	community = new(models.CommunityDetail)
 	sqlSt := `select 
