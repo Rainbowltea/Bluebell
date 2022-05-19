@@ -31,18 +31,18 @@ func SignUp(p *models.ParamSignUp) (err error) {
 	//保存进数据库
 	return mysql.InsertUser(user)
 }
-func Login(p *models.ParamLogin) (token string, err error) {
-	user := &models.User{
+func Login(p *models.ParamLogin) (user *models.User, err error) {
+	user = &models.User{
 		Username: p.Username,
 		Password: p.Password,
 	}
 	//  mysql.Login 此处传入user指针，在指针查询时有对user进行一个“完整”赋值，
 	//  即可以获得user的ID
 	if err = mysql.Login(user); err != nil {
-		return "", err
+		return nil, err
 	}
 	//生成JWT
-	token, err = jwt.GenToken(user.UserID, user.Username)
+	token, err := jwt.GenToken(user.UserID, user.Username)
 	if err != nil {
 		return
 	}

@@ -5,6 +5,7 @@ import (
 	"bluebell/logic"
 	"bluebell/models"
 	"errors"
+	"fmt"
 	_ "go/token"
 	"net/http"
 
@@ -121,7 +122,7 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	//业务逻辑处理
-	token, err := logic.Login(p)
+	user, err := logic.Login(p)
 	if err != nil {
 		zap.L().Error("logic.Login falied", zap.String("username", p.Username), zap.Error(err))
 		if errors.Is(err, mysql.ErrorUserNotExist) {
@@ -136,8 +137,9 @@ func LoginHandler(c *gin.Context) {
 		*/
 	}
 	//3.返回响应
-	c.JSON(http.StatusOK, gin.H{
-		"msg": "登录成功",
+	ResponseSuccess(c, gin.H{
+		"user_id":   fmt.Sprintf("%d", user.UserID), // id值大于1<<53-1  int64类型的最大值是1<<63-1
+		"user_name": user.Username,
+		"token":     user.Token,
 	})
-	ResponseSuccess(c, token)
 }
