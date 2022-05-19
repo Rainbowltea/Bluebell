@@ -56,3 +56,17 @@ func PostDetailHandler(c *gin.Context) {
 	// 3. 返回响应
 	ResponseSuccess(c, data)
 }
+func PostListHandler(c *gin.Context) {
+	//参数校验
+	//事务处理
+	//返回值
+
+	//获取分页数和每页内容
+	page, size := getPageInfo(c)
+	data, err := logic.GetPostList(page, size)
+	if err != nil {
+		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
+	}
+
+	ResponseSuccess(c, data)
+}
