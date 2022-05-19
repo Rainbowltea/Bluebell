@@ -46,6 +46,7 @@ func SignUpHandler(c *gin.Context) {
 		/*
 			附带额外信息返回
 			RespoonseErrorWithMsg(c, CodeInvalidParam, removeTopStruct(errs.Translate(trans)))
+			return
 		*/
 
 		c.JSON(http.StatusOK, gin.H{
