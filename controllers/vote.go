@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bluebell/logic"
 	"bluebell/models"
 
 	"github.com/gin-gonic/gin"
@@ -26,4 +27,16 @@ func PostVoteHandler(c *gin.Context) {
 		RespoonseErrorWithMsg(c, CodeInvalidParam, errData)
 		return
 	}
+	//获取当前登录用户的ID
+	userID, err := getCurrentUserID(c)
+	if err != nil {
+		zap.L().Warn("The current user is not logged in")
+	}
+	if err := logic.PostVote(userID, vote1); err != nil {
+		zap.L().Error("logic.VoteForPost() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, nil)
 }
