@@ -1,6 +1,12 @@
 package logic
 
-import "bluebell/models"
+import (
+	"bluebell/dao/redis"
+	"bluebell/models"
+	"strconv"
+
+	"go.uber.org/zap"
+)
 
 /* 投票的几种情况：
 direction=1时，有两种情况：
@@ -21,6 +27,12 @@ direction=-1时，有两种情况：
 思考：能否增加时间期限，增加后对系统的负担有哪些，如何优化？
 
 */
-func PostVote(userid int64, p *models.ParamVoteData) error {
-
+func PostVote(userID int64, p *models.ParamVoteData) error {
+	//判断投票限制，即是否时间在一个星期之内
+	//通过帖子id获取时间
+	zap.L().Debug("VoteForPost",
+		zap.Int64("userID", userID),
+		zap.String("postID", p.PostID),
+		zap.Int8("direction", p.Direction))
+	return redis.VoteForPost(strconv.Itoa(int(userID)), p.PostID, float64(p.Direction))
 }
