@@ -8,14 +8,14 @@ import (
 )
 
 func GetCommunityList() (communityList []*models.Community, err error) {
-	sqlSt := `select community_id,community_name from commutiny`
-	if err := db.Select(communityList, sqlSt, err); err != nil {
+	sqlSt := `select community_id,community_name from community`
+	if err := db.Select(&communityList, sqlSt); err != nil {
 		if err == sql.ErrNoRows {
 			zap.L().Warn("there is no community in db")
 			err = nil
 		}
 	}
-	return
+	return communityList, err
 }
 
 func GetCommunityDetailByID(id int64) (community *models.CommunityDetail, err error) {
@@ -30,5 +30,5 @@ func GetCommunityDetailByID(id int64) (community *models.CommunityDetail, err er
 			err = ErrorInvalidID
 		}
 	}
-	return community, err
+	return
 }

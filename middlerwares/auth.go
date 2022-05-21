@@ -16,11 +16,11 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		// 这里假设Token放在Header的Authorization中，并使用Bearer开头
 		// 这里的具体实现方式要依据你的实际业务情况决定
 		authHeader := c.Request.Header.Get("Authorization")
-		if authHeader == "" {
-			controllers.ResponseError(c, controllers.CodeNeedLogin)
-			c.Abort()
-			return
-		}
+		// if authHeader == "" {
+		// 	controllers.ResponseError(c, controllers.CodeNeedLogin)
+		// 	c.Abort()
+		// 	return
+		// }
 		// 按空格分割
 		parts := strings.SplitN(authHeader, " ", 2)
 		if !(len(parts) == 2 && parts[0] == "Bearer") {

@@ -17,6 +17,7 @@ func CommunityHandler(c *gin.Context) {
 	if err != nil {
 		zap.L().Error("logic.GetCommunicaty failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
+		return
 	}
 	ResponseSuccess(c, data)
 }
