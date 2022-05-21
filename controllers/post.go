@@ -72,3 +72,33 @@ func PostListHandler(c *gin.Context) {
 
 	ResponseSuccess(c, data)
 }
+
+//根据前端传来的参数动态（分数||创建的时间先后）获取帖子列表
+//1.获取参数
+//2.从redis中获取id
+//3.redis中的id从mysql中获取帖子详细信息
+func PostListHandler2(c *gin.Context) {
+	//参数校验
+	//事务处理
+	//返回值
+	p := &models.ParamPostList{
+		Page:  1,
+		Size:  10,
+		Order: models.OrderTime, // magic string
+	}
+	if err := c.ShouldBind(p); err != nil {
+		zap.L().Error("PostListHandler2 with invalid params", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+	//获取分页数和每页内容
+	page, size := getPageInfo(c)
+	data, err := logic.GetPostList(page, size)
+	if err != nil {
+		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, data)
+}
