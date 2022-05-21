@@ -23,7 +23,7 @@ func GetPostById(pid int64) (post *models.Post, err error) {
 // GetPostList (page-1)*size,size 两个变量实现分页查找
 func GetPostList(page, size int64) (posts []*models.Post, err error) {
 	sqlStr := `select
-	post_id,title,content,auther_id,community_id,create_time
+	post_id,title,content,author_id,community_id,create_time
 	from post
 	limit ?,?`
 	posts = make([]*models.Post, 0, 2)

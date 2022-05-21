@@ -66,6 +66,8 @@ func PostListHandler(c *gin.Context) {
 	data, err := logic.GetPostList(page, size)
 	if err != nil {
 		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
 	}
 
 	ResponseSuccess(c, data)

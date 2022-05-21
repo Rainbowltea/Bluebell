@@ -3,6 +3,7 @@ package redis
 import (
 	"errors"
 	"math"
+	"strconv"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -38,6 +39,25 @@ direction=-1时，有两种情况：
 
 当前用户投的“值”>以前用户 令op=1，说明
 */
+func CreatePost(postID, communityID int64) error {
+	pipeline := Rdb.TxPipeline()
+	// 帖子时间
+	pipeline.ZAdd(getRedisKey(KeyPostTimeZSet), redis.Z{
+		Score:  float64(time.Now().Unix()),
+		Member: postID,
+	})
+
+	// 帖子分数
+	pipeline.ZAdd(getRedisKey(KeyPostScoreZSet), redis.Z{
+		Score:  float64(time.Now().Unix()),
+		Member: postID,
+	})
+	// 更新：把帖子id加到社区的set
+	cKey := getRedisKey(KeyCommunitySetPF + strconv.Itoa(int(communityID)))
+	pipeline.SAdd(cKey, postID)
+	_, err := pipeline.Exec()
+	return err
+}
 
 func VoteForPost(userID, postID string, value float64) error {
 	//取帖子发布时间
