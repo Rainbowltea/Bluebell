@@ -91,11 +91,10 @@ func PostListHandler2(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
-	//获取分页数和每页内容
-	page, size := getPageInfo(c)
-	data, err := logic.GetPostList(page, size)
+
+	data, err := logic.GetPostList2(p)
 	if err != nil {
-		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
+		zap.L().Error("logic.GetPostList2() failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
 		return
 	}
