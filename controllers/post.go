@@ -77,6 +77,17 @@ func PostListHandler(c *gin.Context) {
 //1.获取参数
 //2.从redis中获取id
 //3.redis中的id从mysql中获取帖子详细信息
+// GetPostListHandler2 升级版帖子列表接口
+// @Summary 升级版帖子列表接口
+// @Description 可按社区按时间或分数排序查询帖子列表接口
+// @Tags 帖子相关接口(api分组展示使用的)
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer JWT"
+// @Param object query models.ParamPostList false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /posts2 [get]
 func PostListHandler2(c *gin.Context) {
 	//参数校验
 	//事务处理

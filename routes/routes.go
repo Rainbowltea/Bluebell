@@ -4,8 +4,12 @@ import (
 	"bluebell/controllers"
 	"bluebell/logger"
 	"bluebell/middlerwares"
+
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/http"
 
+	_ "bluebell/docs"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,6 +20,8 @@ func SetUp(mode string) *gin.Engine {
 	r := gin.New()
 	//使用自定义日志打印
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "hello脚手架")
 	})
