@@ -49,7 +49,7 @@ func GetPostVoteData(ids []string) (data []int64, err error) {
 }
 
 // GetCommunityPostIDsInOrder 按社区查询ids
-func GetCommunityPostIDsInOrder(p *models.ParamCommunityPostList) ([]string, error) {
+func GetCommunityPostIDsInOrder(p *models.ParamPostList) ([]string, error) {
 	//传入page,size,社区号，排序方式
 	//使用zinterstore 把分区的帖子set与帖子分数的zset生成一个新的zset
 	//使用新的zset来进行逻辑处理

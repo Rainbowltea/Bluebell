@@ -37,6 +37,7 @@ func SetUp(mode string) *gin.Engine {
 		v1.GET("/post/:id", controllers.PostDetailHandler)
 		v1.GET("/posts", controllers.PostListHandler)
 		//根据创建帖子的时间或者分数来将帖子排序
+		//且或者添加“社区”限制来查找帖子
 		v1.GET("/posts2", controllers.PostListHandler2)
 
 		v1.POST("/vote", controllers.PostVoteHandler)
