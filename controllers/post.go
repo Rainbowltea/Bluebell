@@ -101,3 +101,26 @@ func PostListHandler2(c *gin.Context) {
 
 	ResponseSuccess(c, data)
 }
+
+//根据社区去查询帖子列表
+//使用Redi中的联合存储
+func GetCommunityPostListHandler(c *gin.Context) {
+	p := &models.ParamCommunityPostList{
+		Page:  1,
+		Size:  10,
+		Order: models.OrderTime,
+	}
+	if err := c.ShouldBind(p); err != nil {
+		zap.L().Error("PostListHandler2 with invalid params", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+	data, err := logic.GetCommunityPostList(p)
+	if err != nil {
+		zap.L().Error("logic.GetCommunityPostList2() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, data)
+
+}

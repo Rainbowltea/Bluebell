@@ -2,6 +2,8 @@ package redis
 
 import (
 	"bluebell/models"
+	"strconv"
+	"time"
 
 	"github.com/go-redis/redis"
 )
@@ -44,4 +46,39 @@ func GetPostVoteData(ids []string) (data []int64, err error) {
 		data = append(data, v)
 	}
 	return
+}
+
+// GetCommunityPostIDsInOrder 按社区查询ids
+func GetCommunityPostIDsInOrder(p *models.ParamCommunityPostList) ([]string, error) {
+	//传入page,size,社区号，排序方式
+	//使用zinterstore 把分区的帖子set与帖子分数的zset生成一个新的zset
+	//使用新的zset来进行逻辑处理
+	var orderkey string
+	if p.Order == models.OrderScore {
+		orderkey = getRedisKey(KeyPostScoreZSet)
+	} else {
+		orderkey = getRedisKey(KeyPostTimeZSet)
+	}
+	//社区key,存储帖子id
+	ckey := getRedisKey(KeyCommunitySetPF + strconv.Itoa(int(p.CommunityID)))
+
+	// 利用缓存key减少zinterstore执行的次数
+	//orderkey存储以帖子id为成员的按分数或者时间排序的Zet
+	key := orderkey + strconv.Itoa(int(p.CommunityID))
+	if Rdb.Exists(key).Val() < 1 {
+		// 不存在，需要计算
+		pipeline := Rdb.Pipeline()
+		pipeline.ZInterStore(key, redis.ZStore{
+			Aggregate: "MAX",
+		}, ckey, orderkey) // zinterstore 计算
+		pipeline.Expire(key, 60*time.Second) // 设置超时时间
+		_, err := pipeline.Exec()
+		if err != nil {
+			return nil, err
+		}
+	}
+	start := (p.Page - 1) * p.Size
+	end := start - 1 + p.Size
+	//查询
+	return Rdb.ZRevRange(key, start, end).Result()
 }
