@@ -1,7 +1,7 @@
-package mysql
+package db
 
 import (
-	mydb "bluebell/db/mysql"
+	mydb "cloud/db/mysql"
 	"database/sql"
 	_ "database/sql"
 	"fmt"
